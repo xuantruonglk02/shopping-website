@@ -23,6 +23,7 @@ function getProductById(req, res) {
       });
     }
 
+    results[0].urls = JSON.parse(results[0].urls === null ? '[]' : results[0].urls);
     results[0].sizes = JSON.parse(results[0].sizes);
     return res.json({ success: 1, product: results[0] });
   });

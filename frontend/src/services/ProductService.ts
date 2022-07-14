@@ -5,6 +5,6 @@ export default {
     return apiClient.post('/product/new', args);
   },
   getProductById(id: string) {
-    return apiClient.post(`/product/${id}`);
+    return apiClient.get(`/product/${id}`);
   }
 }

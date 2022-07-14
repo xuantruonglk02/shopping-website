@@ -2,7 +2,7 @@
   <div class="product-ctn">
     <div class="product-thumb-ctn">
       <a :href="'/product/' + productTag?.id">
-        <img :src="'https://se20shop.herokuapp.com' + productTag?.thumbnail" :alt="productTag?.name">
+        <img :src="productTag?.thumbnail" :alt="productTag?.name">
       </a>
     </div>
     <div class="product-text-ctn">
