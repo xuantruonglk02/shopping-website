@@ -1,0 +1,65 @@
+<header class="header row">
+  <div class="header-logo">
+    <div class="hd-logo-ctn">
+      <a class="hd-logo-link" href="/">
+        <img class="logo" src="/images/logo.png" alt="">
+      </a>
+    </div>
+  </div>
+  
+  <%- include('header-nav') %>
+
+  <div class="header-search">
+    <div class="hd-search-ctn row">
+      <div>
+        <form id="search-form" method="get" action="/product/search">
+          <input type="text" name="keyword" id="search-field" value="<%= (typeof keyword != 'undefined' ? keyword : '') %>">
+          <input type="number" name="page" value="1" hidden>
+          <input type="submit" value="submit" hidden>
+        </form>
+      </div>
+      <div>
+        <a id="search-icon" href="#" onclick="$('#search-form').submit(); return false;">
+          <i class="header-icon fa-solid fa-magnifying-glass"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="header-icons">
+    <div class="hd-icons-ctn">
+      <ul class="row">
+        
+        <%- include('cart-menu') %>
+        
+        <li class="hd-account-icon-ctn dropdown">
+          <a href="#" onclick="return false"><i class="header-icon fa-solid fa-circle-user"></i></a>
+          <ul class="dropdown-menu user-dropdown" role="menu">
+            <li>
+              <div class="user-menu-ctn">
+                <div class="user-menu">
+                  <div class="account-menu-row">
+                    <a href="/user/account"><div>Thông tin tài khoản</div></a>
+                  </div>
+                  <div class="account-menu-row">
+                    <a href="/user/orders"><div>Đơn hàng đã đặt</div></a>
+                  </div>
+                  <div class="account-menu-row">
+                    <a href="/auth/logout"><div>Đăng xuất</div></a>
+                  </div>
+                </div>
+              </div>      
+            </li>
+          </ul>
+        </li>
+        <script>
+          $('.hd-account-icon-ctn.dropdown').on('click', function (e) {
+            if ($('#cart-number').text() == '') {
+              e.stopImmediatePropagation();
+              window.location.href = '/auth/login';
+            }
+          });
+        </script>
+      </ul>
+    </div>
+  </div>
+</header>

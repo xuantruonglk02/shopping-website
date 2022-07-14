@@ -1,0 +1,143 @@
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+input[type=submit] {
+  cursor: pointer;
+}
+
+.main {
+  max-width: none;
+  margin: 0;
+  position: relative;
+}
+
+.auth-background {
+  background-image: url("/images/auth1.jpg");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.7;
+}
+
+.page-body {
+  position: absolute;
+  top: 170px;
+  left: 50%;
+  right: 50%;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.auth-left {
+  margin-right: 50px;
+}
+
+.logo-ctn img {
+  width: 300px;
+}
+
+.form-ctn {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+  box-sizing: border-box;
+  padding: 15px 0 15px 0;
+}
+
+.form-ctn h2 {
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.form-input-ctn {
+  margin: 10px 15px 0 15px;
+}
+.form-input-ctn:first-child {
+  margin-top: 0;
+}
+
+.auth-error {
+  margin-top: 3px;
+}
+
+.form-input-ctn input {
+  width: -webkit-fill-available;
+  font-size: 17px;
+  line-height: 16px;
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 1px solid #dddfe2;
+  outline: none;
+}
+
+.form-input-ctn input[type=submit] {
+  background-color: rgb(31, 31, 31);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 48px;
+  border: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  width: 332px;
+}
+
+.form-input-ctn input[type=submit]:hover {
+  background-color: rgb(211, 59, 51);
+}
+
+.auth-error {
+  display: none;
+}
+
+.auth-error span {
+  color: red;
+}
+
+.form-forget-password {
+  display: flex;
+  justify-content: center;
+}
+
+.form-forget-password a:hover {
+  text-decoration: underline;
+}
+
+.form-split-line {
+  border-bottom: 1px solid #dadde1;
+}
+
+.new-account-btn-ctn {
+  display: flex;
+  justify-content: center;
+}
+
+.new-account-btn {
+  width: fit-content;
+  background-color: rgb(31, 31, 31);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 48px;
+  padding: 0 16px;
+}
+
+.new-account-btn:hover {
+  background-color: rgb(211, 59, 51);
+}
+
+.success-notif {
+  max-width: fit-content;
+  text-align: center;
+}
+
+.success-notif span {
+  font-size: 20px;
+  font-weight: 500;
+}

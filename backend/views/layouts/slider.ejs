@@ -1,0 +1,56 @@
+<div class="cover-slides relative">
+  <ul class="slides-ctn">
+    <li class="slide-background fade show" style="background-image: url('/images/slide1.webp');">
+      <div class="slide-ctn">
+        <div class="slide-content" style="text-align: left;">
+          <h1>Welcome to<br>Se20Shop</h1>
+          <span>Clothes and manners do not make the man.<br>But when he is made, they greatly improve his appearance.</span>
+        </div>
+      </div>
+    </li>
+    <li class="slide-background fade hide" style="background-image: url('/images/slide2.webp');">
+      <div class="slide-ctn">
+        <div class="slide-content" style="text-align: center;">
+          <h1>Welcome to<br>Se20Shop</h1>
+          <span>Fashion is not necessarily about labels. It's not about brands.<br>It's about something else that comes from within you.</span>
+        </div>
+      </div>
+    </li>
+    <li class="slide-background fade hide" style="background-image: url('/images/slide3.webp');">
+      <div class="slide-ctn">
+        <div class="slide-content" style="text-align: right;">
+          <h1>Welcome to<br>Se20Shop</h1>
+          <span>Fashion is about what you look like, which translates to what you would like to be like.</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="slide-btns-ctn">
+    <a class="prev" href="#" onclick="slideStep(-1); return false;">&#10094;</a>
+    <a class="next" href="#" onclick="slideStep(1); return false;">&#10095;</a>
+  </div>
+  <div class="dots-ctn">
+    <a href="#" onclick="changeSlide(0); return false;"><div class="dot cur-dot"></div></a>
+    <a href="#" onclick="changeSlide(1); return false;"><div class="dot"></div></a>
+    <a href="#" onclick="changeSlide(2); return false;"><div class="dot"></div></a>
+  </div>
+  <script>
+    $(document).ready(() => {
+      setInterval(() => slideStep(1), 5000);
+    });
+    function slideStep(n) {
+      let cur = $('.show').index();
+      $('.slide-background:eq(' + cur + ')').removeClass('show');
+      $('.slide-background:eq(' + cur + ')').addClass('hide');
+      $('.slide-background:eq(' + ((cur + n) % 3) + ')').addClass('show');
+      changeSlide((cur + n) % 3);
+    }
+    function changeSlide(n) {
+      $('.dots-ctn div').removeClass('cur-dot');
+      $('.dots-ctn div:eq(' + n + ')').addClass('cur-dot');
+      $('.slide-background').removeClass('show');
+      $('.slide-background').addClass('hide');
+      $('.slide-background:eq(' + n + ')').addClass('show');
+    }
+  </script>
+</div>

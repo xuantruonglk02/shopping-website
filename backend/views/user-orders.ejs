@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('layouts/head') %>
+
+  <link rel="stylesheet" href="/css/account.css">
+</head>
+
+<body>
+  <%- include('layouts/header') %>
+
+  <div class="main">
+    <div class="page-body row">
+      <div class="account-left">
+        <div class="account-left-row">
+          <a href="/user/account">
+            <i class="fa-solid fa-user"></i>
+            <span>Thông tin tài khoản</span>
+          </a>
+        </div>
+        <div class="account-left-row account-left-focus">
+          <a href="/user/orders">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span>Đơn hàng</span>
+          </a>
+        </div>
+      </div>
+      <div class="account-right">
+        <div class="account-right-title">
+          <h2>Thông tin đơn hàng</h2>
+          <span>Quản lý các đơn hàng bạn đã mua</span>
+        </div>
+        <div class="account-right-content">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('layouts/footer') %>
+  
+  <%- include('layouts/script') %>
+</body>
+
+</html>
