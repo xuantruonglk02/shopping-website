@@ -6,56 +6,47 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useAuthenticationStore } from '../store/AuthenticationStore';
 import AuthenticationService from '../services/AuthenticationService';
+import router from '../router/routes';
 
-export default defineComponent({
-  data() {
-    return {
-      email: '',
-      password: '',
-      emailError: '',
-      passwordError: ''
-    }
-  },
-  watch: {
-    emailError() {
-      console.log(this.emailError);
-    },
-    passwordError() {
-      console.log(this.passwordError);
-    }
-  },
-  methods: {
-    validateEmail() {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
-        this.emailError = '';
-      } else {
-        this.emailError = 'Please enter a valid email address';
-      }
-    },
-    validatePassword() {
-      if (this.password === undefined || this.password === null || this.password === '') {
-        return this.passwordError = 'Please enter password';
-      }
+const AuthenticationStore = useAuthenticationStore();
 
-      if (this.password.length < 8) {
-        return this.passwordError = 'Please type at least 8 characters';
-      }
+const email = ref('');
+const password = ref('');
+const emailError = ref('');
+const passwordError = ref('');
 
-      return this.passwordError = '';
-    },
-    onSubmit() {
-      console.log(this.email, this.password);
-      AuthenticationService.login(this.email, this.password)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+const validateEmail = () => {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+    emailError.value = '';
+  } else {
+    emailError.value = 'Please enter a valid email address';
   }
+};
+const validatePassword = () => {
+  if (password.value === undefined || password.value === null || password.value === '') {
+    return passwordError.value = 'Please enter password';
+  }
+  if (password.value.length < 8) {
+    return passwordError.value = 'Please type at least 8 characters';
+  }
+  return passwordError.value = '';
+};
+const onSubmit = async () => {
+  try {
+    const response = await AuthenticationService.login(email.value, password.value);
+    if(!response.data.success) return;
+    AuthenticationStore.setUserData(response.data);
+    router.push('/');
+  } catch (error) {
+    throw error;
+  }
+};
+  
+watch([emailError, passwordError], ([emailError, passwordError]) => {
+  console.log(emailError, passwordError);
 });
 </script>

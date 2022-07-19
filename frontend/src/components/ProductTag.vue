@@ -16,23 +16,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import type ProductTag from '../models/ProductTag';
 
-export default defineComponent({
-  props: {
-    productTag: {
-      type: Object as () => ProductTag
-    }
-  }
-})
+const props = defineProps({
+  productTag: Object as () => ProductTag
+});
 </script>
 
 <style scoped>
 .product-ctn {
   width: min-content;
-  margin: 15px 30px 15px 30px;
+  margin: 15px 20px 15px 20px;
 }
 
 .product-thumb-ctn img {

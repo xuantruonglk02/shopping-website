@@ -1,9 +1,9 @@
 <template>
-  <div class="user-menu" @mouseover="showMenu = true" @mouseleave="showMenu = false">
-    <a href="#" onclick="return false">
+  <div class="user-menu" @mouseover="enableMenu = true" @mouseleave="enableMenu = false">
+    <a :href="AuthenticationStore.userLoggedIn ? '#' : '/login'" @click="redirectLogin">
       <i class="header-link fa-solid fa-circle-user"></i>
     </a>
-    <div class="dropdown-menu" v-if="showMenu">
+    <div class="dropdown-menu" v-if="AuthenticationStore.userLoggedIn && enableMenu">
       <div class="account-menu-row">
         <a href="/user/account"><div>Thông tin tài khoản</div></a>
       </div>
@@ -11,22 +11,25 @@
         <a href="/user/orders"><div>Đơn hàng đã đặt</div></a>
       </div>
       <div class="account-menu-row">
-        <a href="/auth/logout"><div>Đăng xuất</div></a>
+        <a href="#" @click.prevent="logout"><div>Đăng xuất</div></a>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useAuthenticationStore } from '../store/AuthenticationStore';
+import router from '../router/routes';
 
-export default defineComponent({
-  data() {
-    return {
-      showMenu: false,
-    }
-  }
-})
+const AuthenticationStore = useAuthenticationStore();
+const enableMenu = ref(false);
+
+const redirectLogin = () => AuthenticationStore.userLoggedIn ? false : true;
+const logout = () => {
+  AuthenticationStore.deleteUserData();
+  router.push('/');
+}
 </script>
 
 <style scoped>

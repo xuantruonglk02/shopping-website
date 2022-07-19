@@ -24,21 +24,11 @@
   </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import HeaderCategories from './HeaderCategories.vue';
 import HeaderSearch from './HeaderSearch.vue';
-import CartMenu from './CartMenu.vue';
-import UserMenu from './UserMenu.vue';
-
-export default defineComponent({
-  components: {
-    HeaderCategories,
-    HeaderSearch,
-    CartMenu,
-    UserMenu
-  }
-})
+import CartMenu from './HeaderMenuCart.vue';
+import UserMenu from './HeaderMenuUser.vue';
 </script>
 
 <style scoped>

@@ -14,44 +14,27 @@
   </li>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import CategoryService from '../services/CategoryService';
+import type Class from '../models/ProductClass';
 
-interface Line {
-  id: string,
-  name: string
-}
+const showMenu = ref(false);
+const classes = ref<Class[]>([]);
 
-interface Class {
-  id: string,
-  name: string,
-  lines: Line[]
-}
-
-export default defineComponent({
-  data() {
-    return {
-      showMenu: false,
-      classes: [] as Class[]
-    }
-  },
-  created() {
-    CategoryService.getCategories()
-      .then((response) => {
-        this.classes = response.data.results.map((e: any) => {
-          return {
-            id: e.class_id,
-            name: e.name,
-            lines: JSON.parse(e.product_lines)
-          }
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-})
+CategoryService.getCategories()
+  .then((response) => {
+    classes.value = response.data.results.map((e: any) => {
+      return {
+        id: e.class_id,
+        name: e.name,
+        lines: JSON.parse(e.product_lines)
+      }
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 </script>
 
 <style scoped>

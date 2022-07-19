@@ -4,7 +4,7 @@
         <div class="left-big-img">
           <img :src="product.thumbnail" alt="">
         </div>
-        <div v-if="product.previewImages.length" class="left-small-img row">
+        <div v-if="product.previewImages?.length" class="left-small-img row">
           <img v-for="url in product.previewImages" :src="url" alt="">
         </div>
       </div>
@@ -33,12 +33,12 @@
             </div>
           </div>
           <div class="product-size-quantity">
-            <span id="quantity-title">Số Lượng: còn {{ product.sizes[currentSizeIndex].quantityOfProducts }}</span>
+            <span id="quantity-title">Số Lượng còn {{ product.sizes?.[currentSizeIndex].quantityOfProducts }}</span>
             <div class="quantity-input row">
               <div class="quantity-modify">
                 <a id="quantity-modify-desc" href="#" onclick="return false">-</a>
               </div>
-              <input type="number" id="quantity-input" min="1" value="1" :max="product.sizes[currentSizeIndex].quantityOfProducts">
+              <input type="number" id="quantity-input" min="1" value="1" :max="product.sizes?.[currentSizeIndex].quantityOfProducts">
               <div class="quantity-modify">
                 <a id="quantity-modify-asc" href="#" onclick="return false">+</a>
               </div>
@@ -112,51 +112,42 @@
   </div> -->
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed, reactive } from 'vue';
 import ProductService from '../services/ProductService';
 import type ProductDetail from '../models/ProductDetail';
 
-export default defineComponent({
-  props: {
-    id: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      product: {} as ProductDetail,
-      currentSizeIndex: 0
-    }
-  },
-  created() {
-    ProductService.getProductById(this.id)
-      .then((response) => {
-        let pr = response.data.product;
-        this.product = {
-          id: pr.product_id,
-          name: pr.name,
-          description: pr.description,
-          price: pr.price,
-          sold: pr.sold,
-          rating: pr.rating,
-          quantityOfRating: pr.quantity_of_rating,
-          sizes: pr.sizes,
-          thumbnail: pr.thumbnail,
-          previewImages: pr.urls
-        };
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  computed: {
-    standardizeDescription() {
-      return this.product.description.split('#').map(e => e.replace(/\n/g, '</p><br><p>'));
-    }
-  }
-})
+const props = defineProps({
+  id: String
+});
+
+const product = reactive(<ProductDetail>{});
+const currentSizeIndex = ref(0);
+
+const standardizeDescription = computed(() => {
+  return product.description.split('#').map(e => e.replace(/\n/g, '</p><br><p>'));
+});
+
+ProductService.getProductById(props.id as string)
+  .then((response) => {
+    let pr = response.data.product;
+    let prt = {
+      id: pr.product_id,
+      name: pr.name,
+      description: pr.description,
+      price: pr.price,
+      sold: pr.sold,
+      rating: pr.rating,
+      quantityOfRating: pr.quantity_of_rating,
+      sizes: pr.sizes,
+      thumbnail: pr.thumbnail,
+      previewImages: pr.urls
+    };
+    Object.assign(product, prt);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 </script>
 
 <style scoped>
