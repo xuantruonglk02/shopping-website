@@ -45,23 +45,31 @@
             </div>
           </div>
         </div>
-          <div v-if="product.description" class="right-botton">
-            <div class="right-botton-top">
-              &#8564;
+        <div class="right-button row">
+          <a id="add-to-cart" href="#" onclick="return false">
+            <div><i class="fa-solid fa-cart-shopping"></i>Thêm vào giỏ hàng</div>
+          </a>
+          <a id="checkout" href="/checkout">
+            <div>Mua ngay</div>
+          </a>
+        </div>
+        <div v-if="product.description" class="right-botton">
+          <div class="right-botton-top">
+            &#8564;
+          </div>
+          <div class="right-botton-des">
+            <div class="right-botton-title row">
+              <div class="right-botton-title-item">
+                <p>Chi Tiết Sản Phẩm</p>
+              </div>
             </div>
-            <div class="right-botton-des">
-              <div class="right-botton-title row">
-                <div class="right-botton-title-item">
-                  <p>Chi Tiết Sản Phẩm</p>
+              <div v-for="des in standardizeDescription" class="right-botton">
+                <div class="right-botton-chitiet">
+                  <p v-html="des"></p>
                 </div>
               </div>
-                <div v-for="des in standardizeDescription" class="right-botton">
-                  <div class="right-botton-chitiet">
-                    <p v-html="des"></p>
-                  </div>
-                </div>
-            </div>
           </div>
+        </div>
       </div>
   </div>
   <!-- <div class="container">

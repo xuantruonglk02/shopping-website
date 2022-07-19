@@ -1,9 +1,9 @@
 <template>
   <div class="user-menu" @mouseover="enableMenu = true" @mouseleave="enableMenu = false">
-    <a :href="AuthenticationStore.userLoggedIn ? '#' : '/login'" @click="redirectLogin">
+    <a :href="loggedIn ? '#' : '/login'" @click="redirectLogin">
       <i class="header-link fa-solid fa-circle-user"></i>
     </a>
-    <div class="dropdown-menu" v-if="AuthenticationStore.userLoggedIn && enableMenu">
+    <div class="dropdown-menu" v-if="loggedIn && enableMenu">
       <div class="account-menu-row">
         <a href="/user/account"><div>Thông tin tài khoản</div></a>
       </div>
@@ -18,14 +18,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useAuthenticationStore } from '../store/AuthenticationStore';
 import router from '../router/routes';
 
 const AuthenticationStore = useAuthenticationStore();
 const enableMenu = ref(false);
 
-const redirectLogin = () => AuthenticationStore.userLoggedIn ? false : true;
+const loggedIn = computed(() => AuthenticationStore.userLoggedIn);
+
+const redirectLogin = () => loggedIn ? false : true;
 const logout = () => {
   AuthenticationStore.deleteUserData();
   router.push('/');

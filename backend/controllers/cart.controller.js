@@ -33,7 +33,7 @@ function getAllProductsForCartMenu(req, res) {
 }
 
 function getAllProducts(req, res) {
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
 
   let query = 'SELECT p.product_id, p.name, p.price, p.thumbnail, s.size_id, s.text, chp.quantity, phs.quantity AS max_quantity '
     + 'FROM Cart_has_Product chp '

@@ -4,21 +4,22 @@
       <h1>{{ title }}</h1>
     </div>
     <div class="list">
-      <ProductTag v-for="productTag in productsList" :productTag="productTag" />
+      <ProductTagVue v-for="productTag in productsList" :productTag="productTag" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import ProductTag from './ProductTag.vue';
+import ProductTagVue from './ProductTag.vue';
 import ProductService from '../services/ProductService';
+import type ProductTag from '../models/ProductTag';
 
 const props = defineProps({
   title: String
 });
 
-const productsList = ref([]);
+const productsList = ref<ProductTag[]>([]);
 
 ProductService.getNewProducts({ quantity: 20 })
   .then((response) => {

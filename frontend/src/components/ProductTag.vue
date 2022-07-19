@@ -1,16 +1,18 @@
 <template>
   <div class="product-ctn">
     <div class="product-thumb-ctn">
-      <a :href="'/product/' + productTag?.id">
+      <router-link :to="{ name: 'Product', params: { id: productTag?.id } }">
         <img :src="productTag?.thumbnail" :alt="productTag?.name">
-      </a>
+      </router-link>
     </div>
     <div class="product-text-ctn">
       <div class="product-name-ctn">
-        <a :href="'/product/' + productTag?.id"><p>{{ productTag?.name }}</p></a>
+        <router-link :to="{ name: 'Product', params: { id: productTag?.id } }">
+          <p>{{ productTag?.name }}</p>
+        </router-link>
       </div>
       <div class="product-price-ctn">
-        <span>{{ productTag?.price }}&nbsp;₫</span>
+        <span>{{ formatPrice(productTag?.price || 0) }}</span>
       </div>
     </div>
   </div>
@@ -22,6 +24,10 @@ import type ProductTag from '../models/ProductTag';
 const props = defineProps({
   productTag: Object as () => ProductTag
 });
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price);
+}
 </script>
 
 <style scoped>
