@@ -1,76 +1,76 @@
 <template>
   <div class="container row">
-      <div class="left">
-        <div class="left-big-img">
-          <img :src="product.thumbnail" alt="">
-        </div>
-        <div v-if="product.previewImages?.length" class="left-small-img row">
-          <img v-for="url in product.previewImages" :src="url" alt="">
-        </div>
+    <div class="left">
+      <div class="left-big-img">
+        <img :src="product.thumbnail" alt="">
       </div>
-      <div class="right">
-        <div class="">
-          <h1>{{ product.name }}</h1>
-        </div>
-        <div class="product-rating">
-          <i class="fa-solid fa-star checked"></i>
-          <i class="fa-solid fa-star checked"></i>
-          <i class="fa-solid fa-star checked"></i>
-          <i class="fa-solid fa-star checked"></i>
-          <i class="fa-solid fa-star"></i>
-          <span>({{ product.quantityOfRating }} đánh giá)</span>
-        </div>
-        <div class="product-price">
-          <span>{{ product.price }}</span>
-        </div>
-        <div class="product-size row">
-          <div class="product-size-input">
-            <span>Size</span>
-            <div class="product-size-input-select">
-              <select id="size-select">
-                <option v-for="size in product.sizes" :value="size.id" :data.quantity="size.quantityOfProducts">{{ size.size }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="product-size-quantity">
-            <span id="quantity-title">Số Lượng còn {{ product.sizes?.[currentSizeIndex].quantityOfProducts }}</span>
-            <div class="quantity-input row">
-              <div class="quantity-modify">
-                <a id="quantity-modify-desc" href="#" onclick="return false">-</a>
-              </div>
-              <input type="number" id="quantity-input" min="1" value="1" :max="product.sizes?.[currentSizeIndex].quantityOfProducts">
-              <div class="quantity-modify">
-                <a id="quantity-modify-asc" href="#" onclick="return false">+</a>
-              </div>
-            </div>
+      <div v-if="product.previewImages?.length" class="left-small-img row">
+        <img v-for="url in product.previewImages" :src="url" alt="">
+      </div>
+    </div>
+    <div class="right">
+      <div class="">
+        <h1>{{ product.name }}</h1>
+      </div>
+      <div class="product-rating">
+        <i class="fa-solid fa-star checked"></i>
+        <i class="fa-solid fa-star checked"></i>
+        <i class="fa-solid fa-star checked"></i>
+        <i class="fa-solid fa-star checked"></i>
+        <i class="fa-solid fa-star"></i>
+        <span>({{ product.quantityOfRating }} đánh giá)</span>
+      </div>
+      <div class="product-price">
+        <span>{{ product.price }}</span>
+      </div>
+      <div class="product-size row">
+        <div class="product-size-input">
+          <span>Size</span>
+          <div class="product-size-input-select">
+            <select v-model="inputSizeId">
+              <option v-for="size in product.sizes" :key="size.id" :value="size.id">{{ size.size }}</option>
+            </select>
           </div>
         </div>
-        <div class="right-button row">
-          <a id="add-to-cart" href="#" onclick="return false">
-            <div><i class="fa-solid fa-cart-shopping"></i>Thêm vào giỏ hàng</div>
-          </a>
-          <a id="checkout" href="/checkout">
-            <div>Mua ngay</div>
-          </a>
-        </div>
-        <div v-if="product.description" class="right-botton">
-          <div class="right-botton-top">
-            &#8564;
-          </div>
-          <div class="right-botton-des">
-            <div class="right-botton-title row">
-              <div class="right-botton-title-item">
-                <p>Chi Tiết Sản Phẩm</p>
-              </div>
+        <div class="product-size-quantity">
+          <span>Số Lượng còn {{ quantityInStock }}</span>
+          <div class="quantity-input row">
+            <div class="quantity-modify">
+              <a href="#" @click.prevent="changeInputQuantity(-1)">-</a>
             </div>
-              <div v-for="des in standardizeDescription" class="right-botton">
-                <div class="right-botton-chitiet">
-                  <p v-html="des"></p>
-                </div>
-              </div>
+            <input type="number" v-model="inputQuantity">
+            <div class="quantity-modify">
+              <a href="#" @click.prevent="changeInputQuantity(1)">+</a>
+            </div>
           </div>
         </div>
       </div>
+      <div class="right-button row">
+        <a id="add-to-cart" href="#" @click.prevent="addToCart">
+          <div><i class="fa-solid fa-cart-shopping"></i>Thêm vào giỏ hàng</div>
+        </a>
+        <a id="checkout" href="/checkout">
+          <div>Mua ngay</div>
+        </a>
+      </div>
+      <div v-if="product.description" class="right-botton">
+        <div class="right-botton-top">
+          &#8564;
+        </div>
+        <div class="right-botton-des">
+          <div class="right-botton-title row">
+            <div class="right-botton-title-item">
+              <p>Chi Tiết Sản Phẩm</p>
+            </div>
+          </div>
+          <div v-for="des in standardizeDescription" class="right-botton">
+            <div class="right-botton-chitiet">
+              <p v-html="des"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- <div class="container">
     <div class="product-ratings-ctn">
@@ -121,20 +121,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive, watch } from 'vue';
+import { useCartStore } from '../store/CartStore';
 import ProductService from '../services/ProductService';
+import CartService from '../services/CartService';
 import type ProductDetail from '../models/ProductDetail';
+
+const CartStore = useCartStore();
 
 const props = defineProps({
   id: String
 });
 
 const product = reactive(<ProductDetail>{});
-const currentSizeIndex = ref(0);
+const inputSizeId = ref(0);
+const inputQuantity = ref(1);
+const quantityInStock = ref(0);
 
 const standardizeDescription = computed(() => {
   return product.description.split('#').map(e => e.replace(/\n/g, '</p><br><p>'));
 });
+
+watch(inputSizeId, (value) => {
+  const index = product.sizes.findIndex(size => size.id === value);
+  quantityInStock.value = product.sizes[index]?.quantityOfProducts;
+  inputQuantity.value = 1;
+});
+
+const changeInputQuantity = (i: number) => {
+  if (inputQuantity.value + i < 1 || inputQuantity.value + i > quantityInStock.value) {
+    return;
+  }
+  inputQuantity.value += i;
+}
+
+const addToCart = () => {
+  CartService.addToCart({
+    productId: product.id,
+    sizeId: inputSizeId.value,
+    quantity: inputQuantity.value
+  })
+    .then((response) => {
+      if (!response.data.success) return;
+      CartStore.addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        thumbnail: product.thumbnail
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 ProductService.getProductById(props.id as string)
   .then((response) => {
@@ -152,6 +191,7 @@ ProductService.getProductById(props.id as string)
       previewImages: pr.urls
     };
     Object.assign(product, prt);
+    inputSizeId.value = product.sizes[0].id;
   })
   .catch((error) => {
     console.log(error);

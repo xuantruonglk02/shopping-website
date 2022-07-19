@@ -56,7 +56,7 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price)
 };
 
-CartService.getProductsInCartMenu(AuthenticationStore.getAccessToken)
+CartService.getProductsInCartMenu()
   .then((response) => {
     const results = response.data.results;
     const products = results.map((product: any) => {

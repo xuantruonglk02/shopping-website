@@ -9,4 +9,11 @@ const apiClient = axios.create({
   }
 });
 
+export const authHeaders = () => {
+  let user = JSON.parse(localStorage.getItem('user') || '{}');
+  return {
+    'x-access-token': user.accessToken
+  }
+}
+
 export default apiClient;

@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
-import type ProductCart from '../models/ProductCart';
+import type ProductTag from '../models/ProductTag';
 
 export const useCartStore = defineStore('CartStore', {
   state() {
     return {
-      products: [] as ProductCart[]
+      products: [] as ProductTag[]
     }
   },
   getters: {
@@ -12,19 +12,15 @@ export const useCartStore = defineStore('CartStore', {
     getQuantityInCart: (state) => state.products.length
   },
   actions: {
-    initializeCart(productList: ProductCart[]) {
+    initializeCart(productList: ProductTag[]) {
       this.products = JSON.parse(JSON.stringify(productList));
     },
-    addToCart(product: ProductCart) {
+    addToCart(product: ProductTag) {
       this.products.push(product);
     },
     removeFromCart(productId: string) {
       const index = this.products.findIndex(product => product.id === productId);
       this.products.splice(index, index);
-    },
-    updateProductInCart(newProduct: ProductCart) {
-      const index = this.products.findIndex(product => product.id === newProduct.id);
-      this.products[index] = { ...newProduct };
     }
   }
 });

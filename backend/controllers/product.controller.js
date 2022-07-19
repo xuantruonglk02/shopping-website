@@ -7,7 +7,7 @@ const { getUserId } = require('./user.controller');
 function getProductById(req, res) {
   let query = `SELECT product_id, name, price, sold, quantity_of_rating, rating, description, thumbnail, `
     + `(SELECT CONCAT('[',GROUP_CONCAT(CONCAT('"',url,'"')),']') FROM Preview_Images WHERE product_id=? GROUP BY product_id) AS urls, `
-    + `(SELECT CONCAT('[',GROUP_CONCAT(CONCAT('{"sizeId":',phs.size_id,',"size":"',s.text,'","quantityOfProducts":',phs.quantity,'}')),']') `
+    + `(SELECT CONCAT('[',GROUP_CONCAT(CONCAT('{"id":',phs.size_id,',"size":"',s.text,'","quantityOfProducts":',phs.quantity,'}')),']') `
     + `FROM Product_has_Size phs INNER JOIN Sizes s ON phs.size_id=s.size_id WHERE phs.product_id=? GROUP BY phs.product_id) AS sizes `
     + `FROM Products WHERE product_id=?`;
   connection.query(query, [req.params.id, req.params.id, req.params.id], (err, results) => {

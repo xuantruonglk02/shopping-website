@@ -2,7 +2,7 @@ const { connection, commitTransaction } = require('../models/database');
 const { getCartId } = require('./user.controller');
 
 function getQuantityOfProducts(req, res) {
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
 
   connection.query('SELECT quantity FROM Carts WHERE cart_id=?', [cartId], (err, results) => {
     if (err) {
@@ -15,7 +15,7 @@ function getQuantityOfProducts(req, res) {
 }
 
 function getAllProductsForCartMenu(req, res) {
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
 
   let query = 'SELECT p.product_id, p.name, p.price, p.thumbnail '
     + 'FROM Cart_has_Product chp '
@@ -65,7 +65,7 @@ function addProduct(req, res) {
   req.body.sizeId = parseInt(req.body.sizeId);
   req.body.quantity = parseInt(req.body.quantity);
 
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
   connection.query('SELECT quantity FROM Carts WHERE cart_id=?', [cartId], (err, results) => {
     if (err) {
       console.log(err);
@@ -118,7 +118,7 @@ function updateCart(req, res) {
     return res.json({ success: 0, code: 'max-in-cart', max: 30 });
   }
 
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
 
   if (req.body.list.length == 0) {
     connection.query('DELETE FROM Cart_has_Product WHERE cart_id=?', [cartId], (err, results) => {
@@ -167,7 +167,7 @@ function removeProduct(req, res) {
     return res.json({ success: 0 });
   }
 
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
 
   connection.query('DELETE FROM Cart_has_Product WHERE cart_id=? AND product_id=? AND size_id=?',
     [cartId, req.body.productId, req.body.sizeId], (err, results) => {
@@ -203,7 +203,7 @@ function removeProduct(req, res) {
   let query = 'DELETE FROM Cart_has_Product WHERE cart_id=? AND ('
     + '(product_id=? AND size_id=?) OR '.repeat(req.body.list.length).slice(0, -4) + ')';
   let params = req.body.list.reduce((p, c) => p.concat([c.productId, c.sizeId]), []);
-  const cartId = getCartId(req.cookies['x-access-token']);
+  const cartId = getCartId(req.headers['x-access-token']);
   connection.query(query, [cartId].concat(params), (err, results) => {
     if (err) {
       console.log(err);
